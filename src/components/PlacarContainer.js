@@ -9,7 +9,7 @@ export default class PlacarContainer extends React.Component {
         super() 
             this.state = {
                 gols_casa: 0,
-                gols_visidante: 0,
+                gols_visitante: 0,
             };
     }
     
@@ -19,34 +19,45 @@ export default class PlacarContainer extends React.Component {
         });  
     }
 
-    marcarGolVisidante() {
+    marcarGolVisitante() {
         this.setState({
-            gols_visidante: this.state.gols_visidante + 1,
+            gols_visitante: this.state.gols_visitante + 1,
         });  
     }
 
     render() {
+        const { partida, casa, visitante } = this.props;
+        const estilo = {float: "left", "marginRight": "20px"}
         return(
             <div>
-                <div style={{float: "left", "marginRight": "20px"}}>
+                <div style={estilo}>
                     <h3>Casa</h3>
-                    <Time nome={this.props.casa.nome} gols={2}
+                    <Time nome={casa.nome} gols={2}
                           gols={this.state.gols_casa}
                           marcarGol={this.marcarGolCasa.bind(this)} />
                 </div>
-                <div style={{float: "left", "marginRight": "20px"}}>
-                    <Partida estadio={this.props.partida.estadio}
-                             data={this.props.partida.data}
-                             horario={this.props.partida.horario} />
+                <div style={estilo}>
+                    <Partida {...partida} />
                 </div>
-                <div style={{float: "left", "marginRight": "20px"}}>
-                    <h3>Visidante</h3>
-                    <Time nome={this.props.visidante.nome} gols={0}
-                          gols={this.state.gols_visidante}
-                          marcarGol={this.marcarGolVisidante.bind(this)} />
+                <div style={estilo}>
+                    <h3>Visitante</h3>
+                    <Time nome={visitante.nome} gols={0}
+                          gols={this.state.gols_visitante}
+                          marcarGol={this.marcarGolVisitante.bind(this)} />
                 </div>
                 <div style={{clear: "both"}}></div>
             </div>
         );
     }
+}
+
+
+
+PlacarContainer.protoTypes = {
+    clima: React.PropTypes.string,
+    tempo: React.PropTypes.number.isRequire,
+};
+
+PlacarContainer.defaultProps = {
+    clima: 'Ensolarado',
 }
